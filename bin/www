@@ -2,6 +2,7 @@
 
 /**
  * Module dependencies.
+ * 依赖的模块。debug是用来处理日志的（调用其方法向控制台输出）
  */
 
 var app = require('../app');
@@ -13,6 +14,7 @@ var http = require('http');
  */
 
 var port = normalizePort(process.env.PORT || '3000');
+//app也可以报错一些变量的值
 app.set('port', port);
 
 /**
@@ -86,5 +88,6 @@ function onListening() {
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
+  //输出一行日志，显示与否取决于变量里的debug参数
   debug('Listening on ' + bind);
 }
