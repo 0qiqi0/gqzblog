@@ -17,14 +17,27 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var articles = require('./routes/articles');
+var session=require('express-session');
+var MongoStore = require('connect-mongo/es5')(session);
 var app = express();
+var flash = require('connect-flash');
 
 // 设置模板的更路径
 app.set('views', path.join(__dirname, 'views'));
 //设置模板引擎
 app.set('view engine', 'html');
 app.engine('html',require('ejs').renderFile);
-
+var mongoose=require('mongoose');
+mongoose.connect('mongodb://123.57.143.189:27017/gqzblog');
+//定义模型:1集合的名称
+//使用了会话中间件后朵儿req。session
+app.use(session({
+  secret: 'gqzblog',
+  resave: false,
+  saveUninitialized: true,
+  //指定保存的位置，可以保存到redis，mongo等等
+  store:new MongoStore({mongooseConnection: mongoose.connection})
+}));
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 //使用日志中间件
@@ -34,8 +47,17 @@ app.use(bodyParser.json());
 ///解析urlencoded类型请求体 通过请求头中的content-type 解析字符创的，比如name=zfpx
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(flash());
 //静态文件服务中间件
 app.use(express.static(path.join(__dirname, 'public')));
+//配置模板中间件
+app.use(function(req,res,next){
+  //res.locals.才是真正的渲染模板的对象。render的第二个参数对象最后会合并到res.locals
+  res.locals.user=req.session.user;
+  res.locals.success=req.flash('success').toString();
+  res.locals.error=req.flash('error').toString();
+  next();
+})
 //路由配置，第一个是根目录，第一个试试一级目录
 app.use('/', routes);
 app.use('/users', users);
