@@ -3,9 +3,11 @@
  */
 var a = require('debug')('a');
 a('aaaaa');
-var b = require('debug')('b:test');
-b('bbbbb');
+var c = require('debug')('b:test');
+c('bbbbb');
 
 //'a'    'b:test'是整个匹配
 
 // set port=3000    echo %port%
+
+//console.log(process.execPath);

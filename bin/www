@@ -9,13 +9,15 @@ var http = require('http');
 
 /**
  * Get port from environment and store in Express.
+ * 从环境变量汇总获得端口号并保存
  */
 var port = normalizePort(process.env.PORT || '3000');
 //app也可以保存一些变量的值
 app.set('port', port);
 
 /**
- * app是回调函数
+ * app是每当有请求到来时的回调函数
+ * 创建app服务器
  */
 var server = http.createServer(app);
 

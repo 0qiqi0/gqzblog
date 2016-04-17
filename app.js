@@ -19,7 +19,7 @@ var users = require('./routes/users');
 var articles = require('./routes/articles');
 var session=require('express-session');
 var MongoStore = require('connect-mongo/es5')(session);
-var app = express();
+var app = express(); //app是一个调用express（也是个函数）后的函数（监听函数）
 var flash = require('connect-flash');
 
 // 设置模板的更路径
@@ -44,7 +44,7 @@ app.use(session({
 app.use(logger('dev'));
 //解析json类型请求体 通过请求头中的content-type
 app.use(bodyParser.json());
-///解析urlencoded类型请求体 通过请求头中的content-type 解析字符创的，比如name=zfpx
+//解析urlencoded类型请求体 通过请求头中的content-type 解析字符创的，比如name=zfpx
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(flash());
@@ -72,10 +72,10 @@ app.use(function(req, res, next) {
 });
 
 // error handlers
-
 // 开发环境错误处理，将打印出错误的调用堆栈
+//此处没调next，就不往下走了。
 if (app.get('env') === 'development') {
-  //错误处理中间件，多了一个参数
+  //错误处理中间件，多了一个err参数
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
@@ -85,13 +85,13 @@ if (app.get('env') === 'development') {
   });
 }
 
-// 生产环境的错误处理
+// 生产环境的错误处理，不把堆栈信息给用户
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error', {
     message: err.message,
-    error: {}
+    error:{}
   });
 });
 

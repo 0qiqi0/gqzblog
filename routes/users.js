@@ -11,9 +11,10 @@ router.get('/reg',validate.checkNotLogin,function(req,res){
 
 //提交用户注册的表单
 router.post('/reg',validate.checkNotLogin,function(req,res){
+  //获取用户数据，放到数据库中
   var user=req.body;
   user.avatar='https://secure.gravatar.com/avatar/'+md5(user.email);
-  //user.password=md5(user.password);
+  user.password=md5(user.password);
   userModel.create(user,function(err,doc){
     if(err){
       req.flash('error',err)
@@ -29,14 +30,19 @@ router.post('/reg',validate.checkNotLogin,function(req,res){
   })
 
 });
+router.get('/login',validate.checkNotLogin,function(req,res){
+  res.render('user/login');
+});
 //用户登录
 router.post('/login',validate.checkNotLogin,function(req,res){
     var user=req.body;
-   // user.password=md5(user.password);
+    console.log(user);
+    console.log(user.password);
+    user.password=md5(user.password);
     userModel.findOne(user,function(err,user){
       if(err){
         req.flash('error',err)
-        res.redirect('back');
+        return res.redirect('back');
       }else{
         req.session.user=user;
         req.flash('success','登录成功');
