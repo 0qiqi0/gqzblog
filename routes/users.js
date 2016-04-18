@@ -1,5 +1,6 @@
 var express = require('express');
 var userModel=require('../model/user');
+
 var validate=require('../middle/index.js');
 var crypto=require('crypto');
 //生成一个路由实例

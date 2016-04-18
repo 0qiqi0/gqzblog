@@ -28,7 +28,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'html');
 app.engine('html',require('ejs').renderFile);
 var mongoose=require('mongoose');
-mongoose.connect('mongodb://123.57.143.189:27017/gqzblog');
+mongoose.connect('mongodb://127.0.0.1:27017/gqzblog');
 //定义模型:1集合的名称
 //使用了会话中间件后朵儿req。session
 app.use(session({
